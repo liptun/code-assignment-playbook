@@ -2030,6 +2030,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/dinero.js@^1.9.0":
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/@types/dinero.js/-/dinero.js-1.9.0.tgz#e11356764339e3d361d38bd54910282b106dc321"
+  integrity sha512-H2XdE6N/A2wJ/TJhGqeHDMUhCaey2R/Lcq9ichGBncKsFGvqrroXZWPNdDkCcgQOBPoCD4n9QuSBUC/35wuJiw==
+
 "@types/eslint-scope@^3.7.3":
   version "3.7.4"
   resolved "https://registry.yarnpkg.com/@types/eslint-scope/-/eslint-scope-3.7.4.tgz#37fc1223f0786c39627068a12e94d6e6fc61de16"
@@ -3844,6 +3849,11 @@ diff-sequences@^29.4.3:
   version "29.4.3"
   resolved "https://registry.yarnpkg.com/diff-sequences/-/diff-sequences-29.4.3.tgz#9314bc1fabe09267ffeca9cbafc457d8499a13f2"
   integrity sha512-ofrBgwpPhCD85kMKtE9RYFFq6OC1A89oW2vvgWZNCwxrUpRUILopY7lsYyMDSjc8g6U6aiO0Qubg6r4Wgt5ZnA==
+
+dinero.js@^1.9.1:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/dinero.js/-/dinero.js-1.9.1.tgz#64b10ce7277a07805dac9c8cd6500e9b7d0aee96"
+  integrity sha512-1HXiF2vv3ZeRQ23yr+9lFxj/PbZqutuYWJnE0qfCB9xYBPnuaJ8lXtli1cJM0TvUXW1JTOaePldmqN5JVNxKSA==
 
 dir-glob@^3.0.1:
   version "3.0.1"
