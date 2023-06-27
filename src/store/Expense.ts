@@ -1,3 +1,4 @@
+import { makeAutoObservable } from "mobx";
 import { Dinero } from "dinero.js";
 import Currency from "../utils/Currency";
 import type { ExpenseSchema } from "./types";
@@ -7,9 +8,11 @@ class Expense {
   id: string;
   title: string;
   amount: Dinero;
-  eurPlnRate: number = 1;
+  conversionRate: number = 1;
 
   constructor(expense: ExpenseSchema, conversionRate: number = 1) {
+    makeAutoObservable(this);
+
     this.id = uuid();
     this.title = expense.title;
     this.amount = Currency(parseInt(expense.amount.replaceAll(".", "")));
@@ -17,7 +20,7 @@ class Expense {
   }
 
   setConversionRate(rate: number) {
-    this.eurPlnRate = rate;
+    this.conversionRate = rate;
   }
 
   getAmountPln() {
@@ -25,7 +28,7 @@ class Expense {
   }
 
   getAmountEur() {
-    return this.amount.divide(this.eurPlnRate, "DOWN");
+    return this.amount.divide(this.conversionRate, "DOWN");
   }
 }
 

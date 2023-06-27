@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { styled } from "styled-components";
+import { cleanupString, countDecimalPlaces } from "../helpers";
 import store from "../store";
+import ValidationErrors from "./ValidationErrors";
+import Button from "./Button";
 
 const Wrapper = styled.div`
   padding: 2em 0;
@@ -46,27 +49,48 @@ const Input = styled.input`
   font-size: 1em;
 `;
 
-const Add = styled.button`
-  font-size: 1em;
-  border: 1px solid #404040;
-  padding: 0.6em 1em;
-  width: 100%;
-  background: #ccc;
-  cursor: pointer;
-`;
-
 const AddExpenseForm = () => {
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
+  const [errors, setErrors] = useState<string[]>([]);
 
   const onSubmitHandle = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    store.addExpense({
-      title: title.trim(),
-      amount: parseFloat(amount).toFixed(2),
-    });
-    setTitle("");
-    setAmount("");
+    const errors: string[] = [];
+
+    const newTitle = cleanupString(title);
+    const newAmount = parseFloat(amount);
+
+    if (!newTitle) {
+      errors.push("Title is required");
+    }
+    if (newTitle.length < 5) {
+      errors.push("Title minimum lenght is 5 characters");
+    }
+    if (!amount) {
+      errors.push("Amount is required");
+    }
+    if (isNaN(newAmount)) {
+      errors.push("Amount must to be a number");
+    }
+    if (newAmount < 0) {
+      errors.push("Amount must be greater than 0");
+    }
+
+    if (!isNaN(newAmount) && countDecimalPlaces(newAmount) > 2) {
+      errors.push("Maxinum precision is limited to two decimal places");
+    }
+
+    setErrors(errors);
+
+    if (!errors.length) {
+      store.addExpense({
+        title: title.trim(),
+        amount: newAmount.toFixed(2),
+      });
+      setTitle("");
+      setAmount("");
+    }
   };
 
   return (
@@ -77,22 +101,15 @@ const AddExpenseForm = () => {
           <Label>
             <p>Title of transaction</p>
             <Input
-              type="text"
-              required
-              minLength={5}
               value={title}
               onChange={(e: React.FormEvent<HTMLInputElement>) =>
-                setTitle(e.currentTarget.value.replace(/ {2,}/g, " "))
+                setTitle(e.currentTarget.value)
               }
             />
           </Label>
           <Label>
             <p>Amount (in PLN)</p>
             <Input
-              type="number"
-              required
-              step={0.01}
-              min={0}
               value={amount}
               onChange={(e: React.FormEvent<HTMLInputElement>) =>
                 setAmount(e.currentTarget.value)
@@ -101,9 +118,10 @@ const AddExpenseForm = () => {
           </Label>
         </InputsWrapper>
         <SubmitWrapper>
-          <Add>add</Add>
+          <Button>add</Button>
         </SubmitWrapper>
       </Form>
+      <ValidationErrors errors={errors} />
     </Wrapper>
   );
 };

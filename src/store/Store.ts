@@ -5,18 +5,25 @@ import type { ExpenseSchema } from "./types";
 
 class Store {
   expenses: Expense[] = [];
-  eurPlnRate = 1;
+  conversionRate = 1;
 
   constructor(initialExpenses: ExpenseSchema[] = [], initialRate = 4.382) {
     makeAutoObservable(this);
-    this.eurPlnRate = initialRate;
+    this.conversionRate = initialRate;
     initialExpenses.forEach((expense) => {
       this.addExpense(expense);
     });
   }
 
+  setConversionRate(newConversionRate: number) {
+    this.conversionRate = newConversionRate;
+    this.expenses.forEach((expense) =>
+      expense.setConversionRate(this.conversionRate)
+    );
+  }
+
   addExpense(expense: ExpenseSchema) {
-    this.expenses.push(new Expense(expense, this.eurPlnRate));
+    this.expenses.push(new Expense(expense, this.conversionRate));
   }
 
   deleteExpense(idToRemove: string) {
