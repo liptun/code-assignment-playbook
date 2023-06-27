@@ -19,7 +19,11 @@ class Store {
     this.expenses.push(new Expense(expense, this.eurPlnRate));
   }
 
-  deleteExpense() {}
+  deleteExpense(idToRemove: string) {
+    this.expenses = this.expenses.filter(
+      (expense) => expense.id !== idToRemove
+    );
+  }
 
   getTotal() {
     return this.expenses.reduce((acc, curr) => {
