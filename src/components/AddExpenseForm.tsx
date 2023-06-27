@@ -72,7 +72,7 @@ const AddExpenseForm = () => {
     const errors: string[] = [];
 
     const newTitle = cleanupString(title);
-    const newAmount = parseFloat(amount);
+    const newAmount = parseFloat(amount.replace(",", "."));
 
     if (!newTitle) {
       errors.push("Title is required");
