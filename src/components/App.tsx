@@ -1,14 +1,22 @@
 import { styled } from "styled-components";
+import AddExpenseForm from "./AddExpenseForm";
+import AppTitle from "./AppTitle";
+import ExpensesSummary from "./ExpensesSummary";
 import ExpensesTable from "./ExpensesTable";
 
 const AppWrapper = styled.div`
-  font-size: 2em;
+  padding: 2em;
+  max-width: 600px;
+  width: 100%;
+  margin: auto;
 `;
 
 const App = () => (
   <AppWrapper>
+    <AppTitle />
+    <AddExpenseForm />
     <ExpensesTable />
-    <input type="number" inputMode="numeric" step={0.01} min={0.01} />
+    <ExpensesSummary />
   </AppWrapper>
 );
 
