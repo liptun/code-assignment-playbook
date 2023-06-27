@@ -28,7 +28,7 @@ class Expense {
   }
 
   getAmountEur() {
-    return this.amount.divide(this.conversionRate, "DOWN");
+    return this.amount.divide(this.conversionRate);
   }
 }
 
