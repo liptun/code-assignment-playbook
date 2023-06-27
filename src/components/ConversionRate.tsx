@@ -23,7 +23,11 @@ const FormTitle = styled.h2`
 
 const InputWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   grid-gap: 1em;
+  @media (min-width: 700px) {
+    flex-direction: row;
+  }
 `;
 
 const ConversionRateStatus = styled.p`

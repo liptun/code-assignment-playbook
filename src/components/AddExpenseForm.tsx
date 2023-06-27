@@ -19,17 +19,26 @@ const FormTitle = styled.h2`
 `;
 
 const Form = styled.form`
-  display: grid;
-  grid-template-columns: 3fr 1fr;
+  display: flex;
+  flex-direction: column;
   grid-gap: 2em;
+  @media (min-width: 700px) {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+  }
 `;
 
 const Label = styled.label`
   font-size: 1em;
+  white-space: nowrap;
   display: flex;
-  grid-gap: 2em;
-  align-items: center;
+  flex-direction: column;
+  grid-gap: 0.5em;
   justify-content: space-between;
+  @media (min-width: 700px) {
+    flex-direction: row;
+    align-items: center;
+  }
 `;
 
 const InputsWrapper = styled.div`
@@ -47,6 +56,10 @@ const Input = styled.input`
   padding: 0.6em 1em;
   border: 1px solid #404040;
   font-size: 1em;
+  width: 100%;
+  @media (min-width: 700px) {
+    width: auto;
+  }
 `;
 
 const AddExpenseForm = () => {
