@@ -34,6 +34,9 @@ const Delete = styled.button`
   background: none;
   font-size: 1em;
   cursor: pointer;
+  &:hover {
+    color: red;
+  }
 `;
 
 const ExpensesTable = observer(() => (
@@ -61,7 +64,9 @@ const ExpensesTable = observer(() => (
               <p>{displayCurrency(amountEur)}</p>
               {isConversionFloatZero && (
                 <ValidationErrors
-                  errors={["Be aware, this value is rounded to minimal value due to conversion to zero"]}
+                  errors={[
+                    "Be aware, this value is rounded to minimal value due to conversion to zero",
+                  ]}
                 />
               )}
             </Cell>
