@@ -50,7 +50,7 @@ const ConversionRate = observer(() => {
     if (isNaN(newRate)) {
       errors.push("Enter correct conversion rate value");
     }
-    if (newRate < 0) {
+    if (newRate <= 0) {
       errors.push("Value must be greater than 0");
     }
     if (!isNaN(newRate) && countDecimalPlaces(newRate) > 3) {
