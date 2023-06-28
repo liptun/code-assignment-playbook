@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { styled } from "styled-components";
-import { cleanupString, countDecimalPlaces } from "../helpers";
+import { cleanupString, countDecimalPlaces, stringToFloat } from "../helpers";
 import store from "../store";
 import ValidationErrors from "./common/ValidationErrors";
 import Button from "./common/Button";
@@ -72,7 +72,7 @@ const AddExpenseForm = () => {
     const errors: string[] = [];
 
     const newTitle = cleanupString(title);
-    const newAmount = parseFloat(amount.replace(",", "."));
+    const newAmount = stringToFloat(amount);
 
     if (!newTitle) {
       errors.push("Title is required");
@@ -86,7 +86,7 @@ const AddExpenseForm = () => {
     if (isNaN(newAmount)) {
       errors.push("Amount must to be a number");
     }
-    if (newAmount < 0) {
+    if (newAmount <= 0) {
       errors.push("Amount must be greater than 0");
     }
 

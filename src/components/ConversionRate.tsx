@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
 import { useState } from "react";
 import { styled } from "styled-components";
-import { countDecimalPlaces } from "../helpers";
+import { countDecimalPlaces, stringToFloat } from "../helpers";
 import store from "../store";
 import ValidationErrors from "./common/ValidationErrors";
 import Button from "./common/Button";
@@ -46,7 +46,7 @@ const ConversionRate = observer(() => {
 
   const onSetConversionRateHandle = () => {
     const errors: string[] = [];
-    const newRate = parseFloat(rate);
+    const newRate = stringToFloat(rate);
     if (isNaN(newRate)) {
       errors.push("Enter correct conversion rate value");
     }
