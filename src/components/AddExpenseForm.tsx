@@ -2,8 +2,8 @@ import { useState } from "react";
 import { styled } from "styled-components";
 import { cleanupString, countDecimalPlaces } from "../helpers";
 import store from "../store";
-import ValidationErrors from "./ValidationErrors";
-import Button from "./Button";
+import ValidationErrors from "./common/ValidationErrors";
+import Button from "./common/Button";
 
 const Wrapper = styled.div`
   padding: 2em 0;

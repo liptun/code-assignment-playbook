@@ -1,8 +1,9 @@
 import { makeAutoObservable } from "mobx";
-import { Dinero } from "dinero.js";
-import Currency from "../utils/Currency";
-import type { ExpenseSchema } from "./types";
 import { v4 as uuid } from "uuid";
+import { Dinero } from "dinero.js";
+
+import type { ExpenseSchema } from "./types";
+import Currency from "../utils/Currency";
 
 class Expense {
   id: string;

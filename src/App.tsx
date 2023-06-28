@@ -1,9 +1,9 @@
 import { styled } from "styled-components";
-import AddExpenseForm from "./AddExpenseForm";
-import AppTitle from "./AppTitle";
-import ExpensesSummary from "./ExpensesSummary";
-import ExpensesTable from "./ExpensesTable";
-import ConversionRate from "./ConversionRate";
+import AddExpenseForm from "./components/AddExpenseForm";
+import AppTitle from "./components/AppTitle";
+import ExpensesSummary from "./components/ExpensesSummary";
+import ExpensesTable from "./components/ExpensesTable";
+import ConversionRate from "./components/ConversionRate";
 
 const AppWrapper = styled.div`
   padding: 15px;

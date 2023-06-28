@@ -3,8 +3,8 @@ import { useState } from "react";
 import { styled } from "styled-components";
 import { countDecimalPlaces } from "../helpers";
 import store from "../store";
-import ValidationErrors from "./ValidationErrors";
-import Button from "./Button";
+import ValidationErrors from "./common/ValidationErrors";
+import Button from "./common/Button";
 
 const Wrapper = styled.div`
   display: flex;
