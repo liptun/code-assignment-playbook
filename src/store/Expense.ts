@@ -9,7 +9,7 @@ class Expense {
   id: string;
   title: string;
   amount: Dinero;
-  conversionRate: number = 1;
+  conversionRate = 1;
 
   constructor(expense: ExpenseSchema, conversionRate: number = 1) {
     makeAutoObservable(this);
@@ -25,11 +25,17 @@ class Expense {
   }
 
   getAmountPln() {
-    return this.amount;
+    return { amount: this.amount };
   }
 
   getAmountEur() {
-    return this.amount.divide(this.conversionRate);
+    let conversion = this.amount.divide(this.conversionRate);
+    const conversionFloat = parseFloat(conversion.toFormat("0.00"));
+    const isConversionFloatZero = conversionFloat === 0;
+    return {
+      amount: isConversionFloatZero ? Currency(1) : conversion,
+      isConversionFloatZero,
+    };
   }
 }
 

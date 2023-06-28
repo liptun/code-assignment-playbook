@@ -2,6 +2,7 @@ import { observer } from "mobx-react";
 import { css, styled } from "styled-components";
 import store from "../store";
 import { displayCurrency } from "../utils/Currency";
+import ValidationErrors from "./common/ValidationErrors";
 
 const CellCss = css`
   padding: 1em 0.6em;
@@ -46,21 +47,37 @@ const ExpensesTable = observer(() => (
       </Row>
     </thead>
     <tbody>
-      {store.expenses.map((transaction) => (
-        <Row key={transaction.id}>
-          <Cell>{transaction.title}</Cell>
-          <Cell>{displayCurrency(transaction.getAmountPln())}</Cell>
-          <Cell>{displayCurrency(transaction.getAmountEur())}</Cell>
-          <Cell>
-            <Delete onClick={() => store.deleteExpense(transaction.id)}>
-              Delete
-            </Delete>
-          </Cell>
-        </Row>
-      ))}
+      {store.expenses.map((transaction) => {
+        const { amount: amountPln } = transaction.getAmountPln();
+        const { amount: amountEur, isConversionFloatZero } =
+          transaction.getAmountEur();
+        return (
+          <Row key={transaction.id}>
+            <Cell>{transaction.title}</Cell>
+            <Cell>
+              <p>{displayCurrency(amountPln)}</p>
+            </Cell>
+            <Cell>
+              <p>{displayCurrency(amountEur)}</p>
+              {isConversionFloatZero && (
+                <ValidationErrors
+                  errors={["Be aware, this value is rounded to minimal value due to conversion to zero"]}
+                />
+              )}
+            </Cell>
+            <Cell>
+              <Delete onClick={() => store.deleteExpense(transaction.id)}>
+                Delete
+              </Delete>
+            </Cell>
+          </Row>
+        );
+      })}
       {store.expenses.length === 0 && (
         <Row>
-          <Cell colSpan={4}>No data - use form above to add expense to this table</Cell>
+          <Cell colSpan={4}>
+            No data - use form above to add expense to this table
+          </Cell>
         </Row>
       )}
     </tbody>

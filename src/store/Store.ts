@@ -1,7 +1,15 @@
-import { makeAutoObservable } from "mobx";
+import { configure, makeAutoObservable } from "mobx";
 import Currency from "../utils/Currency";
 import Expense from "./Expense";
 import type { ExpenseSchema } from "./types";
+
+configure({
+  enforceActions: "observed",
+  computedRequiresReaction: true,
+  reactionRequiresObservable: true,
+  observableRequiresReaction: true,
+  disableErrorBoundaries: false,
+});
 
 class Store {
   expenses: Expense[] = [];
@@ -34,13 +42,13 @@ class Store {
 
   getTotal() {
     return this.expenses.reduce((acc, curr) => {
-      return acc.add(curr.getAmountPln());
+      return acc.add(curr.getAmountPln().amount);
     }, Currency(0));
   }
 
   getTotalEuro() {
     return this.expenses.reduce((acc, curr) => {
-      return acc.add(curr.getAmountEur());
+      return acc.add(curr.getAmountEur().amount);
     }, Currency(0));
   }
 }
