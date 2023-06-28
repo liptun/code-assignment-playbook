@@ -16,7 +16,7 @@ const Table = styled.table`
   width: 100%;
 `;
 const Row = styled.tr`
-  &:nth-child(odd) {
+  &:nth-child(even) {
     background: #ddd;
   }
 `;
