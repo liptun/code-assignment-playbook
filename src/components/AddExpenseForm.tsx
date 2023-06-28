@@ -80,6 +80,9 @@ const AddExpenseForm = () => {
     if (newTitle.length < 5) {
       errors.push("Title minimum lenght is 5 characters");
     }
+    if (newTitle.length > 100) {
+      errors.push("Be resonable and type shorter title");
+    }
     if (!amount) {
       errors.push("Amount is required");
     }
@@ -92,6 +95,9 @@ const AddExpenseForm = () => {
 
     if (!isNaN(newAmount) && countDecimalPlaces(newAmount) > 2) {
       errors.push("Maxinum precision is limited to two decimal places");
+    }
+    if (newAmount > 999999999999999) {
+      errors.push("Be resonable and enter lower value");
     }
 
     setErrors(errors);

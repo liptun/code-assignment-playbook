@@ -9,6 +9,6 @@ const Currency = (amount: number, options: DineroFactory.Options = {}) =>
 export default Currency;
 
 export const displayCurrency = (currency: Dinero) => {
-  const format = currency.hasSubUnits() ? "0.00" : "0";
+  const format = currency.hasSubUnits() ? "0,0.00" : "0,0";
   return currency.setLocale("en-US").toFormat(format);
 };
