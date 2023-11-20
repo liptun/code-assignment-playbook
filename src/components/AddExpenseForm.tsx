@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { styled } from "styled-components";
-import { cleanupString, countDecimalPlaces, stringToFloat } from "../helpers";
 import store from "../store";
 import ValidationErrors from "./common/ValidationErrors";
 import Button from "./common/Button";
+import { AddExpenseFormState } from "./AddExpenseFormState";
+import { observer } from "mobx-react-lite";
 
 const Wrapper = styled.div`
   padding: 2em 0;
@@ -62,77 +63,26 @@ const Input = styled.input`
   }
 `;
 
-const AddExpenseForm = () => {
-  const [title, setTitle] = useState("");
-  const [amount, setAmount] = useState("");
-  const [errors, setErrors] = useState<string[]>([]);
-
-  const onSubmitHandle = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const errors: string[] = [];
-
-    const newTitle = cleanupString(title);
-    const newAmount = stringToFloat(amount);
-
-    if (!newTitle) {
-      errors.push("Title is required");
-    }
-    if (newTitle.length < 5) {
-      errors.push("Title minimum lenght is 5 characters");
-    }
-    if (newTitle.length > 100) {
-      errors.push("Be resonable and type shorter title");
-    }
-    if (!amount) {
-      errors.push("Amount is required");
-    }
-    if (isNaN(newAmount)) {
-      errors.push("Amount must to be a number");
-    }
-    if (newAmount <= 0) {
-      errors.push("Amount must be greater than 0");
-    }
-
-    if (!isNaN(newAmount) && countDecimalPlaces(newAmount) > 2) {
-      errors.push("Maxinum precision is limited to two decimal places");
-    }
-    if (newAmount > 999999999999999) {
-      errors.push("Be resonable and enter lower value");
-    }
-
-    setErrors(errors);
-
-    if (!errors.length) {
-      store.addExpense({
-        title: title.trim(),
-        amount: newAmount.toFixed(2),
-      });
-      setTitle("");
-      setAmount("");
-    }
-  };
+const AddExpenseForm = observer(() => {
+  const [addExpenseFormState] = useState(() => new AddExpenseFormState(store));
 
   return (
     <Wrapper>
       <FormTitle>Add new expense</FormTitle>
-      <Form onSubmit={onSubmitHandle}>
+      <Form onSubmit={addExpenseFormState.onSubmitHandle}>
         <InputsWrapper>
           <Label>
             <p>Title of transaction</p>
             <Input
-              value={title}
-              onChange={(e: React.FormEvent<HTMLInputElement>) =>
-                setTitle(e.currentTarget.value)
-              }
+              value={addExpenseFormState.title}
+              onChange={addExpenseFormState.onChangeTitleHandle}
             />
           </Label>
           <Label>
             <p>Amount (in PLN)</p>
             <Input
-              value={amount}
-              onChange={(e: React.FormEvent<HTMLInputElement>) =>
-                setAmount(e.currentTarget.value)
-              }
+              value={addExpenseFormState.amount}
+              onChange={addExpenseFormState.onChangeAmountHandle}
             />
           </Label>
         </InputsWrapper>
@@ -140,9 +90,9 @@ const AddExpenseForm = () => {
           <Button>add</Button>
         </SubmitWrapper>
       </Form>
-      <ValidationErrors errors={errors} />
+      <ValidationErrors errors={addExpenseFormState.errors} />
     </Wrapper>
   );
-};
+});
 
 export default AddExpenseForm;

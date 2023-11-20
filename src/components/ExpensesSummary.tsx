@@ -9,8 +9,8 @@ const Wrapper = styled.div`
 
 const ExpensesSummary = observer(() => (
   <Wrapper>
-    Sum: {displayCurrency(store.getTotal())} (
-    {displayCurrency(store.getTotalEuro())} EUR)
+    Sum: {displayCurrency(store.total)} (
+    {displayCurrency(store.totalEuro)} EUR)
   </Wrapper>
 ));
 
