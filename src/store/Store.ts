@@ -1,4 +1,4 @@
-import { configure, makeAutoObservable } from "mobx";
+import { computed, configure, makeAutoObservable } from "mobx";
 import Currency from "../utils/Currency";
 import Expense from "./Expense";
 import type { ExpenseSchema } from "./types";
@@ -12,43 +12,41 @@ configure({
 });
 
 class Store {
-  expenses: Expense[] = [];
-  conversionRate = 1;
+  public expenses: Expense[] = [];
 
-  constructor(initialExpenses: ExpenseSchema[] = [], initialRate = 4.382) {
+  constructor(
+    initialExpenses: ExpenseSchema[] = [],
+    public conversionRate = 4.382
+  ) {
     makeAutoObservable(this);
-    this.conversionRate = initialRate;
     initialExpenses.forEach((expense) => {
       this.addExpense(expense);
     });
   }
 
-  setConversionRate(newConversionRate: number) {
+  public setConversionRate(newConversionRate: number) {
     this.conversionRate = newConversionRate;
-    this.expenses.forEach((expense) =>
-      expense.setConversionRate(this.conversionRate)
-    );
   }
 
-  addExpense(expense: ExpenseSchema) {
-    this.expenses.push(new Expense(expense, this.conversionRate));
+  public addExpense(expense: ExpenseSchema) {
+    this.expenses.push(new Expense(expense, this));
   }
 
-  deleteExpense(idToRemove: string) {
+  public deleteExpense(idToRemove: string) {
     this.expenses = this.expenses.filter(
       (expense) => expense.id !== idToRemove
     );
   }
 
-  getTotal() {
+  @computed public get total() {
     return this.expenses.reduce((acc, curr) => {
-      return acc.add(curr.getAmountPln().amount);
+      return acc.add(curr.amountPln);
     }, Currency(0));
   }
 
-  getTotalEuro() {
+  @computed public get totalEuro() {
     return this.expenses.reduce((acc, curr) => {
-      return acc.add(curr.getAmountEur().amount);
+      return acc.add(curr.amountEur);
     }, Currency(0));
   }
 }
