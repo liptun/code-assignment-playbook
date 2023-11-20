@@ -50,13 +50,10 @@ const ExpensesTable = observer(() => (
       </Row>
     </thead>
     <tbody>
-      {store.expenses.map((transaction) => {
-        const { amount: amountPln } = transaction.getAmountPln();
-        const { amount: amountEur, isConversionFloatZero } =
-          transaction.getAmountEur();
+      {store.expenses.map(({id, title, amountPln, amountEur, isConversionFloatZero}) => {
         return (
-          <Row key={transaction.id}>
-            <Cell>{transaction.title}</Cell>
+          <Row key={id}>
+            <Cell>{title}</Cell>
             <Cell>
               <p>{displayCurrency(amountPln)}</p>
             </Cell>
@@ -71,7 +68,7 @@ const ExpensesTable = observer(() => (
               )}
             </Cell>
             <Cell>
-              <Delete onClick={() => store.deleteExpense(transaction.id)}>
+              <Delete onClick={() => store.deleteExpense(id)}>
                 Delete
               </Delete>
             </Cell>

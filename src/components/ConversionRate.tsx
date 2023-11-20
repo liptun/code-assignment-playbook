@@ -1,10 +1,10 @@
 import { observer } from "mobx-react";
 import { useState } from "react";
 import { styled } from "styled-components";
-import { countDecimalPlaces, stringToFloat } from "../helpers";
 import store from "../store";
 import ValidationErrors from "./common/ValidationErrors";
 import Button from "./common/Button";
+import { ConversionRateState } from "./ConversionRateState";
 
 const Wrapper = styled.div`
   display: flex;
@@ -41,25 +41,8 @@ const Input = styled.input`
 `;
 
 const ConversionRate = observer(() => {
-  const [rate, setRate] = useState(store.conversionRate.toString());
-  const [errors, setErrors] = useState<string[]>([]);
+  const [conversionRateState] = useState(() => new ConversionRateState(store));
 
-  const onSetConversionRateHandle = () => {
-    const errors: string[] = [];
-    const newRate = stringToFloat(rate);
-    if (isNaN(newRate)) {
-      errors.push("Enter correct conversion rate value");
-    }
-    if (newRate <= 0) {
-      errors.push("Value must be greater than 0");
-    }
-    if (!isNaN(newRate) && countDecimalPlaces(newRate) > 3) {
-      errors.push("Maximal precision is three decimal points");
-    }
-
-    !errors.length && store.setConversionRate(newRate);
-    setErrors(errors);
-  };
   return (
     <Wrapper>
       <FormTitle>Conversion rate</FormTitle>
@@ -69,16 +52,14 @@ const ConversionRate = observer(() => {
       <InputWrapper>
         <Input
           required
-          value={rate}
-          onChange={(e: React.FormEvent<HTMLInputElement>) =>
-            setRate(e.currentTarget.value)
-          }
+          value={conversionRateState.rate}
+          onChange={conversionRateState.onChangeRateHandle}
         />
-        <Button onClick={onSetConversionRateHandle}>
+        <Button onClick={conversionRateState.onSetConversionRateHandle}>
           set new conversion rate
         </Button>
       </InputWrapper>
-      <ValidationErrors errors={errors} />
+      <ValidationErrors errors={conversionRateState.errors} />
     </Wrapper>
   );
 });

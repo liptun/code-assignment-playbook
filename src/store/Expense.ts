@@ -1,41 +1,41 @@
-import { makeAutoObservable } from "mobx";
+import { computed, makeObservable, observable } from "mobx";
 import { v4 as uuid } from "uuid";
 import { Dinero } from "dinero.js";
 
 import type { ExpenseSchema } from "./types";
 import Currency from "../utils/Currency";
+import Store from "./Store";
 
 class Expense {
-  id: string;
-  title: string;
-  amount: Dinero;
-  conversionRate = 1;
+  @observable id: string;
+  @observable title: string;
+  @observable amount: Dinero;
 
-  constructor(expense: ExpenseSchema, conversionRate: number = 1) {
-    makeAutoObservable(this);
+  constructor(
+    expense: ExpenseSchema,
+    private readonly store: Store
+  ) {
+    makeObservable(this);
 
     this.id = uuid();
     this.title = expense.title;
     this.amount = Currency(parseInt(expense.amount.replaceAll(".", "")));
-    this.setConversionRate(conversionRate);
   }
 
-  setConversionRate(rate: number) {
-    this.conversionRate = rate;
+  @computed public get amountPln() {
+    return this.amount;
   }
 
-  getAmountPln() {
-    return { amount: this.amount };
+  @computed private get conversion() {
+    return this.amount.divide(this.store.conversionRate);
   }
 
-  getAmountEur() {
-    let conversion = this.amount.divide(this.conversionRate);
-    const conversionFloat = parseFloat(conversion.toFormat("0.00"));
-    const isConversionFloatZero = conversionFloat === 0;
-    return {
-      amount: isConversionFloatZero ? Currency(1) : conversion,
-      isConversionFloatZero,
-    };
+  @computed public get isConversionFloatZero() {
+    return parseFloat(this.conversion.toFormat("0.00")) === 0;
+  }
+
+  @computed public get amountEur() {
+    return this.isConversionFloatZero ? Currency(1) : this.conversion;
   }
 }
 
