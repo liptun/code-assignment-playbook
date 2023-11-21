@@ -1,10 +1,10 @@
 import { observer } from "mobx-react";
 import { useState } from "react";
 import { styled } from "styled-components";
-import store from "../store";
 import ValidationErrors from "./common/ValidationErrors";
 import Button from "./common/Button";
 import { ConversionRateState } from "./ConversionRateState";
+import AppState from "../store/AppState";
 
 const Wrapper = styled.div`
   display: flex;
@@ -40,14 +40,20 @@ const Input = styled.input`
   font-size: 1em;
 `;
 
-const ConversionRate = observer(() => {
-  const [conversionRateState] = useState(() => new ConversionRateState(store));
+type Props = {
+  appState: AppState;
+};
+
+const ConversionRate = observer(({ appState }: Props) => {
+  const [conversionRateState] = useState(
+    () => new ConversionRateState(appState)
+  );
 
   return (
     <Wrapper>
       <FormTitle>Conversion rate</FormTitle>
       <ConversionRateStatus>
-        1 EUR = {store.conversionRate} PLN
+        1 EUR = {appState.conversionRate} PLN
       </ConversionRateStatus>
       <InputWrapper>
         <Input

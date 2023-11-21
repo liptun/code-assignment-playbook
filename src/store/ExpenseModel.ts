@@ -4,16 +4,16 @@ import { Dinero } from "dinero.js";
 
 import type { ExpenseSchema } from "./types";
 import Currency from "../utils/Currency";
-import Store from "./Store";
+import AppState from "./AppState";
 
-class Expense {
+class ExpenseModel {
   @observable id: string;
   @observable title: string;
   @observable amount: Dinero;
 
   constructor(
     expense: ExpenseSchema,
-    private readonly store: Store
+    private readonly appState: AppState
   ) {
     makeObservable(this);
 
@@ -27,7 +27,7 @@ class Expense {
   }
 
   @computed private get conversion() {
-    return this.amount.divide(this.store.conversionRate);
+    return this.amount.divide(this.appState.conversionRate);
   }
 
   @computed public get isConversionFloatZero() {
@@ -39,4 +39,4 @@ class Expense {
   }
 }
 
-export default Expense;
+export default ExpenseModel;

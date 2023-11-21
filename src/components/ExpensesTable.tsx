@@ -1,8 +1,8 @@
 import { observer } from "mobx-react";
 import { css, styled } from "styled-components";
-import store from "../store";
 import { displayCurrency } from "../utils/Currency";
 import ValidationErrors from "./common/ValidationErrors";
+import AppState from "../store/AppState";
 
 const CellCss = css`
   padding: 1em 0.6em;
@@ -39,7 +39,11 @@ const Delete = styled.button`
   }
 `;
 
-const ExpensesTable = observer(() => (
+type Props = {
+  appState: AppState;
+};
+
+const ExpensesTable = observer(({ appState }: Props) => (
   <Table>
     <thead>
       <Row>
@@ -50,32 +54,32 @@ const ExpensesTable = observer(() => (
       </Row>
     </thead>
     <tbody>
-      {store.expenses.map(({id, title, amountPln, amountEur, isConversionFloatZero}) => {
-        return (
-          <Row key={id}>
-            <Cell>{title}</Cell>
-            <Cell>
-              <p>{displayCurrency(amountPln)}</p>
-            </Cell>
-            <Cell>
-              <p>{displayCurrency(amountEur)}</p>
-              {isConversionFloatZero && (
-                <ValidationErrors
-                  errors={[
-                    "Be aware, this value is rounded to minimal value due to conversion to zero",
-                  ]}
-                />
-              )}
-            </Cell>
-            <Cell>
-              <Delete onClick={() => store.deleteExpense(id)}>
-                Delete
-              </Delete>
-            </Cell>
-          </Row>
-        );
-      })}
-      {store.expenses.length === 0 && (
+      {appState.expenses.map(
+        ({ id, title, amountPln, amountEur, isConversionFloatZero }) => {
+          return (
+            <Row key={id}>
+              <Cell>{title}</Cell>
+              <Cell>
+                <p>{displayCurrency(amountPln)}</p>
+              </Cell>
+              <Cell>
+                <p>{displayCurrency(amountEur)}</p>
+                {isConversionFloatZero && (
+                  <ValidationErrors
+                    errors={[
+                      "Be aware, this value is rounded to minimal value due to conversion to zero",
+                    ]}
+                  />
+                )}
+              </Cell>
+              <Cell>
+                <Delete onClick={() => appState.deleteExpense(id)}>Delete</Delete>
+              </Cell>
+            </Row>
+          );
+        }
+      )}
+      {appState.expenses.length === 0 && (
         <Row>
           <Cell colSpan={4}>
             No data - use form above to add expense to this table

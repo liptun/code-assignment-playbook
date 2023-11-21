@@ -1,13 +1,13 @@
 import { action, makeObservable, observable } from "mobx";
 import { ChangeEvent, FormEvent } from "react";
 import { cleanupString, countDecimalPlaces, stringToFloat } from "../helpers";
-import Store from "../store/Store";
+import AppState from "../store/AppState";
 
 export class AddExpenseFormState {
   @observable public title = "";
   @observable public amount = "";
   @observable public errors: Array<string> = [];
-  constructor(private readonly store: Store) {
+  constructor(private readonly store: AppState) {
     makeObservable(this);
   }
 

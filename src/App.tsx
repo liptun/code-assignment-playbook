@@ -4,6 +4,8 @@ import AppTitle from "./components/AppTitle";
 import ExpensesSummary from "./components/ExpensesSummary";
 import ExpensesTable from "./components/ExpensesTable";
 import ConversionRate from "./components/ConversionRate";
+import { observer } from "mobx-react-lite";
+import AppState from "./store/AppState";
 
 const AppWrapper = styled.div`
   padding: 15px;
@@ -12,14 +14,19 @@ const AppWrapper = styled.div`
   margin: auto;
 `;
 
-const App = () => (
-  <AppWrapper>
-    <AppTitle />
-    <ConversionRate />
-    <AddExpenseForm />
-    <ExpensesTable />
-    <ExpensesSummary />
-  </AppWrapper>
-);
+type Props = {
+  appState: AppState;
+};
+const App = observer(({ appState }: Props) => {
+  return (
+    <AppWrapper>
+      <AppTitle />
+      <ConversionRate appState={appState} />
+      <AddExpenseForm appState={appState} />
+      <ExpensesTable appState={appState} />
+      <ExpensesSummary appState={appState} />
+    </AppWrapper>
+  );
+});
 
 export default App;

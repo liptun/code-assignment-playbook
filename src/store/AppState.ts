@@ -1,7 +1,7 @@
 import { action, computed, configure, makeObservable, observable } from "mobx";
 import Currency from "../utils/Currency";
-import Expense from "./Expense";
 import type { ExpenseSchema } from "./types";
+import ExpenseModel from "./ExpenseModel";
 
 configure({
   enforceActions: "observed",
@@ -11,8 +11,8 @@ configure({
   disableErrorBoundaries: false,
 });
 
-class Store {
-  @observable public expenses: Expense[] = [];
+class AppState {
+  @observable public expenses: ExpenseModel[] = [];
 
   constructor(
     initialExpenses: ExpenseSchema[] = [],
@@ -29,7 +29,7 @@ class Store {
   }
 
   @action public addExpense(expense: ExpenseSchema) {
-    this.expenses.push(new Expense(expense, this));
+    this.expenses.push(new ExpenseModel(expense, this));
   }
 
   @action public deleteExpense(idToRemove: string) {
@@ -51,4 +51,4 @@ class Store {
   }
 }
 
-export default Store;
+export default AppState;

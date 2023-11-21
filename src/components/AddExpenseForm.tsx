@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { styled } from "styled-components";
-import store from "../store";
 import ValidationErrors from "./common/ValidationErrors";
 import Button from "./common/Button";
 import { AddExpenseFormState } from "./AddExpenseFormState";
 import { observer } from "mobx-react-lite";
+import AppState from "../store/AppState";
 
 const Wrapper = styled.div`
   padding: 2em 0;
@@ -63,8 +63,14 @@ const Input = styled.input`
   }
 `;
 
-const AddExpenseForm = observer(() => {
-  const [addExpenseFormState] = useState(() => new AddExpenseFormState(store));
+type Props = {
+  appState: AppState;
+};
+
+const AddExpenseForm = observer(({ appState }: Props) => {
+  const [addExpenseFormState] = useState(
+    () => new AddExpenseFormState(appState)
+  );
 
   return (
     <Wrapper>

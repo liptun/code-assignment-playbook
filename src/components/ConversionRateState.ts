@@ -1,13 +1,13 @@
 import { action, makeObservable, observable } from "mobx";
 import { countDecimalPlaces, stringToFloat } from "../helpers";
 import { ChangeEvent } from "react";
-import Store from "../store/Store";
+import AppState from "../store/AppState";
 
 export class ConversionRateState {
   @observable public errors: Array<string> = [];
   @observable public rate: string;
 
-  constructor(private readonly store: Store) {
+  constructor(private readonly store: AppState) {
     makeObservable(this);
     this.rate = this.store.conversionRate.toString();
   }

@@ -1,16 +1,19 @@
 import { observer } from "mobx-react";
 import { styled } from "styled-components";
-import store from "../store";
 import { displayCurrency } from "../utils/Currency";
+import AppState from "../store/AppState";
 
 const Wrapper = styled.div`
   font-size: 1.4em;
 `;
 
-const ExpensesSummary = observer(() => (
+type Props = {
+  appState: AppState;
+};
+
+const ExpensesSummary = observer(({ appState }: Props) => (
   <Wrapper>
-    Sum: {displayCurrency(store.total)} (
-    {displayCurrency(store.totalEuro)} EUR)
+    Sum: {displayCurrency(appState.total)} ({displayCurrency(appState.totalEuro)} EUR)
   </Wrapper>
 ));
 
